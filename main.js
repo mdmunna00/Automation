@@ -1,27 +1,29 @@
 // main.js
-
 const { chromium } = require("playwright");
 const login = require("./login");
 const handleRedirect = require("./redirect");
 
-const URL = "https://your-test-site.com";
-const VALUE = "+880XXXXXXXXX";
+const VALUE = "+8801816355617";
 
 (async () => {
 
   const browser = await chromium.launch({
     headless: false,
-    slowMo: 80
+    args: ["--start-maximized"]
   });
 
-  const page = await browser.newPage();
+  const context = await browser.newContext({
+    viewport: null
+  });
+
+  const page = await context.newPage();
 
   try {
 
-    await login(page, URL, VALUE);
+    await login(page, VALUE);
     await handleRedirect(page);
 
-    console.log("Full flow completed");
+    console.log("Flow completed successfully");
 
   } catch (err) {
     console.log("Error:", err);
